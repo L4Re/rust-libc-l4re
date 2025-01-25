@@ -1,24 +1,27 @@
-use crate::off64_t;
 use crate::prelude::*;
+
 pub type c_char = u8;
 pub type wchar_t = c_uint;
-pub type c_long = i32;
-pub type c_ulong = u32;
+pub type c_long = i64;
+pub type c_ulong = u64;
 pub type time_t = c_long;
+
 pub type clock_t = c_long;
 pub type fsblkcnt_t = c_ulong;
 pub type fsfilcnt_t = c_ulong;
 pub type ino_t = c_ulong;
-pub type off_t = c_long;
-pub type pthread_t = c_ulong;
+pub type off_t = c_ulong;
 pub type suseconds_t = c_long;
-pub type nlink_t = c_uint;
-pub type blksize_t = c_long;
+pub type pthread_t = c_ulong;
+pub type nlink_t = c_ulong;
+pub type blksize_t = c_ulong;
 pub type blkcnt_t = c_long;
+
 pub type fsblkcnt64_t = u64;
 pub type fsfilcnt64_t = u64;
 pub type __u64 = c_ulonglong;
 pub type __s64 = c_longlong;
+
 s! {
     pub struct cmsghdr {
         pub cmsg_len: size_t,
@@ -30,9 +33,9 @@ s! {
         pub msg_name: *mut c_void,
         pub msg_namelen: crate::socklen_t,
         pub msg_iov: *mut crate::iovec,
-        pub msg_iovlen: c_int,
+        pub msg_iovlen: size_t,
         pub msg_control: *mut c_void,
-        pub msg_controllen: crate::socklen_t,
+        pub msg_controllen: size_t,
         pub msg_flags: c_int,
     }
 
@@ -41,46 +44,45 @@ s! {
     }
 
     pub struct stat {
-        pub st_dev: c_ulonglong,
-        __pad1: c_ushort,
-        pub st_ino: crate::ino_t,
+        pub st_dev: c_ulong,
+        pub st_ino: ino_t,
         pub st_mode: crate::mode_t,
-        pub st_nlink: crate::nlink_t,
+        pub st_nlink: nlink_t,
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
-        pub st_rdev: c_ulonglong,
-        __pad2: c_ushort,
+        pub st_rdev: c_ulong,
         pub st_size: off_t,
-        pub st_blksize: crate::blksize_t,
-        pub st_blocks: crate::blkcnt_t,
-        pub st_atime: crate::time_t,
+        pub st_blksize: blksize_t,
+        pub st_blocks: blkcnt_t,
+        pub st_atime: time_t,
         pub st_atime_nsec: c_long,
-        pub st_mtime: crate::time_t,
+        pub st_mtime: time_t,
         pub st_mtime_nsec: c_long,
-        pub st_ctime: crate::time_t,
+        pub st_ctime: time_t,
         pub st_ctime_nsec: c_long,
         __unused4: c_ulong,
         __unused5: c_ulong,
     }
 
-    pub struct stat64 {
+    pub struct stat64
+    {
         pub st_dev: c_ulonglong,
-        pub __pad1: c_uint,
-        pub __st_ino: crate::ino_t,
+        pub __pad0: [c_char; 4],
+        pub __st_ino: ino_t,
         pub st_mode: crate::mode_t,
-        pub st_nlink: crate::nlink_t,
+        pub st_nlink: nlink_t,
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
         pub st_rdev: c_ulonglong,
         pub __pad2: c_uint,
-        pub st_size: off64_t,
-        pub st_blksize: crate::blksize_t,
+        pub st_size: crate::off64_t,
+        pub st_blksize: blksize_t,
         pub st_blocks: crate::blkcnt64_t,
-        pub st_atime: crate::time_t,
+        pub st_atime: time_t,
         pub st_atime_nsec: c_long,
-        pub st_mtime: crate::time_t,
+        pub st_mtime: time_t,
         pub st_mtime_nsec: c_long,
-        pub st_ctime: crate::time_t,
+        pub st_ctime: time_t,
         pub st_ctime_nsec: c_long,
         pub st_ino: crate::ino64_t,
     }
@@ -107,19 +109,19 @@ s! {
         pub totalhigh: c_ulong,
         pub freehigh: c_ulong,
         pub mem_unit: c_uint,
-        pub _f: [c_char; 8],
+        pub _f: [c_char; 0],
     }
 
     pub struct statfs {
         pub f_type: c_int,
         pub f_bsize: c_int,
-        pub f_blocks: crate::fsblkcnt_t,
-        pub f_bfree: crate::fsblkcnt_t,
-        pub f_bavail: crate::fsblkcnt_t,
-        pub f_files: crate::fsfilcnt_t,
-        pub f_ffree: crate::fsfilcnt_t,
+        pub f_blocks: fsblkcnt_t,
+        pub f_bfree: fsblkcnt_t,
+        pub f_bavail: fsblkcnt_t,
+        pub f_files: fsfilcnt_t,
+        pub f_ffree: fsfilcnt_t,
 
-        pub f_fsid: crate::fsid_t,
+        pub f_fsid: fsid_t,
         pub f_namelen: c_int,
         pub f_frsize: c_int,
         pub f_flags: c_int,
@@ -129,12 +131,12 @@ s! {
     pub struct statfs64 {
         pub f_type: c_int,
         pub f_bsize: c_int,
-        pub f_blocks: crate::fsblkcnt64_t,
-        pub f_bfree: crate::fsblkcnt64_t,
-        pub f_bavail: crate::fsblkcnt64_t,
-        pub f_files: crate::fsfilcnt64_t,
-        pub f_ffree: crate::fsfilcnt64_t,
-        pub f_fsid: crate::fsid_t,
+        pub f_blocks: fsblkcnt64_t,
+        pub f_bfree: fsblkcnt64_t,
+        pub f_bavail: fsblkcnt64_t,
+        pub f_files: fsfilcnt64_t,
+        pub f_ffree: fsfilcnt64_t,
+        pub f_fsid: fsid_t,
         pub f_namelen: c_int,
         pub f_frsize: c_int,
         pub f_flags: c_int,
@@ -158,11 +160,11 @@ s! {
     }
 
     pub struct sigset_t {
-        __val: [c_ulong; 2],
+        __val: [c_ulong; 1],
     }
 
     pub struct sigaction {
-        pub sa_sigaction: crate::sighandler_t,
+        pub sa_handler: crate::sighandler_t,
         pub sa_flags: c_ulong,
         pub sa_restorer: Option<extern "C" fn()>,
         pub sa_mask: sigset_t,
@@ -174,7 +176,7 @@ s! {
         pub c_cflag: crate::tcflag_t,
         pub c_lflag: crate::tcflag_t,
         pub c_line: crate::cc_t,
-        pub c_cc: [crate::cc_t; crate::NCCS],
+        pub c_cc: [crate::cc_t; NCCS],
         pub c_ispeed: crate::speed_t,
         pub c_ospeed: crate::speed_t,
     }
@@ -183,7 +185,7 @@ s! {
         pub si_signo: c_int,
         pub si_errno: c_int,
         pub si_code: c_int,
-        pub _pad: [c_int; 29],
+        pub _pad: [c_int; 28],
     }
 
     pub struct stack_t {
@@ -207,12 +209,12 @@ s! {
     }
 
     pub struct msqid_ds {
-        pub msg_perm: crate::ipc_perm,
-        pub msg_stime: crate::time_t,
+        pub msg_perm: ipc_perm,
+        pub msg_stime: time_t,
         __unused1: c_ulong,
-        pub msg_rtime: crate::time_t,
+        pub msg_rtime: time_t,
         __unused2: c_ulong,
-        pub msg_ctime: crate::time_t,
+        pub msg_ctime: time_t,
         __unused3: c_ulong,
         __msg_cbytes: c_ulong,
         pub msg_qnum: crate::msgqnum_t,
@@ -224,13 +226,13 @@ s! {
     }
 
     pub struct shmid_ds {
-        pub shm_perm: crate::ipc_perm,
+        pub shm_perm: ipc_perm,
         pub shm_segsz: size_t,
-        pub shm_atime: crate::time_t,
+        pub shm_atime: time_t,
         __unused1: c_ulong,
-        pub shm_dtime: crate::time_t,
+        pub shm_dtime: time_t,
         __unused2: c_ulong,
-        pub shm_ctime: crate::time_t,
+        pub shm_ctime: time_t,
         __unused3: c_ulong,
         pub shm_cpid: crate::pid_t,
         pub shm_lpid: crate::pid_t,
@@ -239,20 +241,61 @@ s! {
         __unused5: c_ulong,
     }
 
-    // FIXME(1.0) this is actually a union
-    #[cfg_attr(target_pointer_width = "32", repr(align(4)))]
-    #[cfg_attr(target_pointer_width = "64", repr(align(8)))]
-    pub struct sem_t {
-        #[cfg(target_pointer_width = "32")]
-        __size: [c_char; 16],
-        #[cfg(target_pointer_width = "64")]
-        __size: [c_char; 32],
+    pub struct __sched_param {
+        __sched_priority: c_int,
     }
+
+    pub struct sockaddr {
+        pub sa_family: crate::sa_family_t,
+        pub sa_data: [c_char; 14],
+    }
+
+    pub struct sockaddr_in {
+        pub sin_family: crate::sa_family_t,
+        pub sin_port: crate::in_port_t,
+        pub sin_addr: crate::in_addr,
+        pub sin_zero: [u8; 8],
+    }
+
+    pub struct sockaddr_in6 {
+        pub sin6_family: crate::sa_family_t,
+        pub sin6_port: crate::in_port_t,
+        pub sin6_flowinfo: u32,
+        pub sin6_addr: crate::in6_addr,
+        pub sin6_scope_id: u32,
+    }
+
+    pub struct glob_t { //FIXME
+        pub gl_pathc: size_t,
+        pub gl_pathv: *mut *mut c_char,
+        pub gl_offs: size_t,
+        pub gl_flags: c_int,
+        __unused1: *mut c_void,
+        __unused2: *mut c_void,
+        __unused3: *mut c_void,
+        __unused4: *mut c_void,
+        __unused5: *mut c_void,
+    }
+
+    pub struct cpu_set_t {
+        bits: [u64; 16],
+    }
+    pub struct fsid_t {
+        __val: [c_int; 2],
+    }
+
+    pub struct sem_t {
+        __size: [c_char; 32],
+        __align: c_long,
+    }
+
 }
+
 pub const O_CLOEXEC: c_int = 0o2000000;
 pub const __SIZEOF_PTHREAD_ATTR_T: usize = 36;
 pub const __SIZEOF_PTHREAD_MUTEX_T: usize = 24;
 pub const __SIZEOF_PTHREAD_MUTEXATTR_T: usize = 4;
+pub const __SIZEOF_PTHREAD_COND_T: usize = 48;
 pub const __SIZEOF_PTHREAD_COND_COMPAT_T: usize = 12;
 pub const __SIZEOF_PTHREAD_CONDATTR_T: usize = 4;
 pub const __SIZEOF_PTHREAD_RWLOCK_T: usize = 32;
@@ -260,10 +303,11 @@ pub const __SIZEOF_PTHREAD_RWLOCKATTR_T: usize = 8;
 pub const __SIZEOF_PTHREAD_BARRIER_T: usize = 20;
 pub const __SIZEOF_PTHREAD_BARRIERATTR_T: usize = 4;
 pub const NCCS: usize = 32;
+
 // I wasn't able to find those constants
 // in uclibc build environment for armv7
-pub const MAP_HUGETLB: c_int = 0x040000;
-// from linux/other/mod.rs
+pub const MAP_HUGETLB: c_int = 0x040000; // from linux/other/mod.rs
+
 // autogenerated constants with hand tuned types
 pub const B0: crate::speed_t = 0;
 pub const B1000000: crate::speed_t = 0x1008;
@@ -472,6 +516,7 @@ pub const POLLWRNORM: c_short = 0x100;
 pub const PTHREAD_STACK_MIN: size_t = 16384;
 pub const RTLD_GLOBAL: c_int = 0x00100;
 pub const PIDFD_NONBLOCK: c_int = 0x800;
+
 // These are typed unsigned to match sigaction
 pub const SA_NOCLDSTOP: c_ulong = 0x1;
 pub const SA_NOCLDWAIT: c_ulong = 0x2;
@@ -480,6 +525,7 @@ pub const SA_NODEFER: c_ulong = 0x40000000;
 pub const SA_ONSTACK: c_ulong = 0x8000000;
 pub const SA_RESETHAND: c_ulong = 0x80000000;
 pub const SA_RESTART: c_ulong = 0x10000000;
+
 pub const SFD_CLOEXEC: c_int = 0x80000;
 pub const SFD_NONBLOCK: c_int = 0x800;
 pub const SIGBUS: c_int = 0x7;
@@ -509,6 +555,7 @@ pub const SOCK_DGRAM: c_int = 0x2;
 pub const SOCK_NONBLOCK: c_int = 0o0004000;
 pub const SOCK_SEQPACKET: c_int = 0x5;
 pub const SOCK_STREAM: c_int = 0x1;
+
 pub const TAB1: c_int = 0x800;
 pub const TAB2: c_int = 0x1000;
 pub const TAB3: c_int = 0x1800;
@@ -532,7 +579,9 @@ pub const VTDLY: c_int = 0x4000;
 pub const VTIME: usize = 0x5;
 pub const VWERASE: usize = 0xe;
 pub const XTABS: crate::tcflag_t = 0x1800;
+
 pub const MADV_SOFT_OFFLINE: c_int = 101;
+
 // Syscall table is copied from src/unix/notbsd/linux/musl/b32/arm.rs
 pub const SYS_restart_syscall: c_long = 0;
 pub const SYS_exit: c_long = 1;
@@ -913,11 +962,3 @@ pub const SYS_memfd_secret: c_long = 447;
 pub const SYS_process_mrelease: c_long = 448;
 pub const SYS_futex_waitv: c_long = 449;
 pub const SYS_set_mempolicy_home_node: c_long = 450;
-pub const __SIZEOF_PTHREAD_COND_T: usize = 48;
-// I wasn't able to find those constants
-// in uclibc build environment for armv7
-// from linux/other/mod.rs
-// autogenerated constants with hand tuned types
-// These are typed unsigned to match sigaction
-// Syscall table is copied from src/unix/notbsd/linux/musl/b32/arm.rs
-// FIXME: should be a `c_long` too, but a bug slipped in.

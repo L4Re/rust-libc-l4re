@@ -28,21 +28,20 @@ s! {
     }
 }
 
-#[cfg(target_os = "l4re")]
 #[allow(missing_debug_implementations)]
 pub struct pthread_attr_t {
-    pub __detachstate: c_int,
-    pub __schedpolicy: c_int,
-    pub __schedparam: super::__sched_param,
-    pub __inheritsched: c_int,
-    pub __scope: c_int,
-    pub __guardsize: size_t,
-    pub __stackaddr_set: c_int,
-    pub __stackaddr: *mut c_void, // better don't use it
-    pub __stacksize: size_t,
+    __detachstate: c_int,
+    __schedpolicy: c_int,
+    __schedparam: super::__sched_param,
+    __inheritsched: c_int,
+    __scope: c_int,
+    __guardsize: size_t,
+    __stackaddr_set: c_int,
+    __stackaddr: *mut c_void, // better don't use it
+    __stacksize: size_t,
     // L4Re specifics
-    pub affinity: l4_sched_cpu_set_t,
-    pub create_flags: c_uint,
+    affinity: l4_sched_cpu_set_t,
+    create_flags: c_uint,
 }
 
 // L4Re requires a min stack size of 64k; that isn't defined in uClibc, but
