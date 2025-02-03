@@ -293,7 +293,7 @@ s! {
 
 pub const O_CLOEXEC: c_int = 0o2000000;
 pub const __SIZEOF_PTHREAD_ATTR_T: usize = 36;
-pub const __SIZEOF_PTHREAD_MUTEX_T: usize = 24;
+pub const __SIZEOF_PTHREAD_MUTEX_T: usize = 40;
 pub const __SIZEOF_PTHREAD_MUTEXATTR_T: usize = 4;
 pub const __SIZEOF_PTHREAD_COND_T: usize = 48;
 pub const __SIZEOF_PTHREAD_COND_COMPAT_T: usize = 12;
